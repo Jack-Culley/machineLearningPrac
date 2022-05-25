@@ -6,33 +6,6 @@ import Login from "./components/Login";
 import { useSelector } from 'react-redux';
 
 
-// function PrivateRoute1({isAuthenticated, children}) {
-//     return (
-//         isAuthenticated ? children : <Navigate to={{
-//                 pathname: "/login/",
-//             }}
-//         />
-//       );
-// }
-
-function PrivateRoute2({isAuthenticated, children}) {
-    return (
-        !isAuthenticated ? children : <Navigate to={{
-                pathname: "/",
-            }}
-        />
-      );
-}
-
-function PrivateRoute3({isAuthenticated, children}) {
-    return (
-        isAuthenticated ? children : <Navigate to={{
-                pathname: "/",
-            }}
-        />
-      );
-}
-
 function Urls() {
     const isAuthenticated = useSelector((state) => state.auth.token !== null && typeof state.auth.token !== 'undefined');
     return (
