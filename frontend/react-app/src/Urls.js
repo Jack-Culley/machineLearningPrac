@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Home from './components/Home';
 import PasswordUpdate from './components/PasswordUpdate';
 import Login from "./components/Login";
@@ -35,18 +35,15 @@ function PrivateRoute3({isAuthenticated, children}) {
 
 function Urls() {
     const isAuthenticated = useSelector((state) => state.auth.token !== null && typeof state.auth.token !== 'undefined');
-    const navigate = useNavigate();
     return (
         <div>
             <BrowserRouter>
                 <Routes>
                     <Route exact path="/login/" element={
-                        <PrivateRoute2 isAuthenticated={isAuthenticated}>
-                            <Login />
-                        </PrivateRoute2>
+                        isAuthenticated ? <Login /> : <Navigate to={{pathname: "/", replace: true}}/>
                     }/>
                     <Route exact path="/" element={
-                        isAuthenticated ? <Home /> : navigate("/login/", {replace: true})
+                        isAuthenticated ? <Home /> : <Navigate to={{pathname: "/login/", replace: true}}/>
                     }/>
                     <Route exact path="/update_password/" element={
                         <PrivateRoute3 isAuthenticated={localStorage.getItem('token') !== null && localStorage.getItem('token') !== undefined}>
