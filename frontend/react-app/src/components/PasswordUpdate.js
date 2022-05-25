@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
     const [new_password2, setNewPassword2] = React.useState(null);
     const [success, setSuccess] = React.useState(false);
 
-    const isAuthenticated = useSelector((state) => state.auth.token !== null && typeof state.auth.token !== 'undefined')
     const token = useSelector((state) => state.auth.token)
 
     const handleFormFieldChange = (event) => {

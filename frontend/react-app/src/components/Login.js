@@ -9,8 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { FormControlLabel, Checkbox, Grid } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom"
+import { useDispatch } from 'react-redux';
 
 
 import { connect } from 'react-redux';
@@ -32,10 +31,7 @@ function Copyright(props) {
 
 function Login() {
 
-  //const navigate = useNavigate();
-
   const dispatch = useDispatch();
-  //const isAuthenticated = useSelector(state => state.auth.token !== null && typeof state.auth.token !== 'undefined');
 
   const [username, setuserName] = React.useState(null);
   const [password, setPassword] = React.useState(null);
