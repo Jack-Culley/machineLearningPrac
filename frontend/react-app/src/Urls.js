@@ -40,15 +40,13 @@ function Urls() {
             <BrowserRouter>
                 <Routes>
                     <Route exact path="/login/" element={
-                        isAuthenticated ? <Login /> : <Navigate to={{pathname: "/", replace: true}}/>
+                        !isAuthenticated ? <Login /> : <Navigate to={{pathname: "/", replace: true}}/>
                     }/>
                     <Route exact path="/" element={
                         isAuthenticated ? <Home /> : <Navigate to={{pathname: "/login/", replace: true}}/>
                     }/>
                     <Route exact path="/update_password/" element={
-                        <PrivateRoute3 isAuthenticated={localStorage.getItem('token') !== null && localStorage.getItem('token') !== undefined}>
-                            <PasswordUpdate />
-                        </PrivateRoute3>
+                        localStorage.getItem('token') !== null && localStorage.getItem('token') !== undefined ? <PasswordUpdate /> : <Navigate to={{pathname: "/login/", replace: true}} />
                     }/>
                     <Route path="*" element={
                         <Navigate to={{
