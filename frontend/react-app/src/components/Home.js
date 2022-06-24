@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import * as settings from '../settings';
-
+import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Paper, Typography, Slider, Button } from '@material-ui/core';
@@ -36,44 +36,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // ########################################################
-// Our Custom IRIS slider. You may use the default slider instead of this
-// ########################################################
-const IrisSlider = withStyles({
-    root: {
-        color: '#751E66',
-    },
-    valueLabel: {
-        left: 'calc(-50% -2)',
-        top: -22,
-        '& *': {
-            background: 'transparent',
-            color: '#000',
-        },
-    },
-    mark: {
-        height: 8,
-        width: 1,
-        marginTop: -3,
-    },
-    markActive: {
-        opacity: 1,
-        backgroundColor: 'currentColor',
-    },
-})(Slider);
-
-
-// ########################################################
 // The main Home component returned by this Module
 // ########################################################
 function Home(props) {
     // Material UI Classes 
     const classes = useStyles();
+    const token = useSelector((state) => state.auth.token)
 
     // React hook state variable - Dimensions
     const [image, setImage] = React.useState(null);
 
     // React hook state variable - Prediction
-    const [prediction, setPrediction] = React.useState(null)
+    const [prediction, setPrediction] = React.useState("No Prediction")
 
     // Function to update the Dimensions state upon slider value change
     const handleFileSelect = event => {
@@ -82,23 +56,26 @@ function Home(props) {
 
     // Function to make the predict API call and update the state variable - Prediction 
     const handlePredict = event => {
-        const formData = new FormData();
+        //const formData = new FormData();
 
-        formData.append("file", image, image.name);
+        //formData.append("file", image, image.name);
 
-        console.log(image)
+        console.log(props.token)
 
         //Axios variables required to call the predict API
-        let headers = { 'Authorization': `Token ${props.token}` };
+        let headers = { 'Authorization': `Token ${token}` };
         let url = settings.API_SERVER + '/api/predict/';
         let method = 'post';
-        let config = { headers, method, url, data: formData };
+        let predictionData = new FormData();
+        predictionData.append("image", image);
+        let config = { headers, method, url, data: predictionData };
 
         //Axios predict API call
         axios(config).then(
-            res => {setPrediction(res.data["Predicted Image Classifier"])
+            res => {setPrediction(res.data["Predicted Object"])
             }).catch(
-                error => {alert(error)})
+                error => {alert(error)}
+                )
 
         return (
             <div>
@@ -117,10 +94,11 @@ function Home(props) {
 
 
             <div>
-                <input type="file" onChange={this.handleFileSelect} />
-                <button onClick={this.handlePredict}>
+                <input type="file" onChange={handleFileSelect} />
+                <button onClick={handlePredict}>
                   Upload!
                 </button>
+                {prediction}
             </div>
 
             
