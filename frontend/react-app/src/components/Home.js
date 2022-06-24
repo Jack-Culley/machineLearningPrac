@@ -61,8 +61,6 @@ const IrisSlider = withStyles({
     },
 })(Slider);
 
-// Marks on the slider track
-const marks = [{ value: 0 }, { value: 10 }];
 
 // ########################################################
 // The main Home component returned by this Module
@@ -72,142 +70,61 @@ function Home(props) {
     const classes = useStyles();
 
     // React hook state variable - Dimensions
-    const [dimensions, setDimensions] = React.useState({
-        sepal_length: 6,
-        sepal_width: 6,
-        petal_length: 6,
-        petal_width: 6,
-    });
+    const [image, setImage] = React.useState(null);
+
     // React hook state variable - Prediction
     const [prediction, setPrediction] = React.useState(null)
 
     // Function to update the Dimensions state upon slider value change
-    const handleSliderChange = name => (event, newValue) => {
-        setDimensions(
-            {
-                ...dimensions,
-                ...{ [name]: newValue }
-            }
-        );
+    const handleFileSelect = event => {
+        setImage(event.target.files[0])
     };
 
     // Function to make the predict API call and update the state variable - Prediction 
     const handlePredict = event => {
-        // Submit Iris Flower measured dimensions as form data
-        let irisFormData = new FormData();
-        irisFormData.append("sepal length (cm)", dimensions.sepal_length);
-        irisFormData.append("sepal width (cm)", dimensions.sepal_width);
-        irisFormData.append("petal length (cm)", dimensions.petal_length);
-        irisFormData.append("petal width (cm)", dimensions.petal_width);
+        const formData = new FormData();
+
+        formData.append("file", image, image.name);
+
+        console.log(image)
 
         //Axios variables required to call the predict API
         let headers = { 'Authorization': `Token ${props.token}` };
         let url = settings.API_SERVER + '/api/predict/';
         let method = 'post';
-        let config = { headers, method, url, data: irisFormData };
+        let config = { headers, method, url, data: formData };
 
         //Axios predict API call
         axios(config).then(
-            res => {setPrediction(res.data["Predicted Iris Species"])
+            res => {setPrediction(res.data["Predicted Image Classifier"])
             }).catch(
                 error => {alert(error)})
 
-    }
-
-    function valuetext(value) {
-        return `${value} cm`;
+        return (
+            <div>
+                <h2>File Details:</h2>
+                    <p>File Name: {image.name}</p>             
+                    <p>File Type: {image.type}</p>
+            </div>
+        );
     }
 
     return (
         <React.Fragment>
             <CssBaseline />
             <Container fixed className={classes.container}>
-                <Grid container alignItems="center" spacing={3}>
-                    <Grid item xs={6}>
-                        <Paper className={classes.title} elevation={0}>
-                            <Typography variant="h5">
-                                Iris Flower Dimensions
-                            </Typography>
-                        </Paper>
-                        <Paper className={classes.sliders}>
-                            <Typography id="sepal_length" variant="caption" >
-                                Sepal Length (cm)
-                            </Typography>
-                            <IrisSlider
-                                defaultValue={6}
-                                getAriaValueText={valuetext}
-                                aria-labelledby="sepal_length"
-                                step={0.1}
-                                min={0}
-                                max={10}
-                                valueLabelDisplay="on"
-                                marks={marks}
-                                className={classes.slidertop}
-                                onChange={handleSliderChange("sepal_length")}
-                            />
-                            <Typography id="sepal_width" variant="caption" gutterBottom>
-                                Sepal Width (cm)
-                            </Typography>
-                            <IrisSlider
-                                defaultValue={6}
-                                getAriaValueText={valuetext}
-                                aria-labelledby="sepal_width"
-                                step={0.1}
-                                min={0}
-                                max={10}
-                                valueLabelDisplay="on"
-                                marks={marks}
-                                className={classes.slidertop}
-                                onChange={handleSliderChange("sepal_width")}
-                            />
-                            <Typography id="petal_length" variant="caption" gutterBottom>
-                                Petal Length (cm)
-                            </Typography>
-                            <IrisSlider
-                                defaultValue={6}
-                                getAriaValueText={valuetext}
-                                aria-labelledby="petal_length"
-                                step={0.1}
-                                min={0}
-                                max={10}
-                                valueLabelDisplay="on"
-                                marks={marks}
-                                className={classes.slidertop}
-                                onChange={handleSliderChange("petal_length")}
-                            />
-                            <Typography id="petal_width" variant="caption" gutterBottom>
-                                Petal Width (cm)
-                            </Typography>
-                            <IrisSlider
-                                defaultValue={6}
-                                getAriaValueText={valuetext}
-                                aria-labelledby="petal_width"
-                                step={0.1}
-                                min={0}
-                                max={10}
-                                valueLabelDisplay="on"
-                                marks={marks}
-                                className={classes.slidertop}
-                                onChange={handleSliderChange("petal_width")}
-                            />
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Button variant="contained" color="primary" onClick={handlePredict}>
-                            Predict
-                        </Button>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Paper className={classes.title} elevation={0}>
-                            <Typography variant="caption" display="inline">
-                                Predicted Iris Species: <span>&nbsp;</span>
-                            </Typography>
-                            <Typography variant="body1" display="inline">
-                                {prediction}
-                            </Typography>
-                        </Paper>
-                    </Grid>
-                </Grid>
+                
+
+
+            <div>
+                <input type="file" onChange={this.handleFileSelect} />
+                <button onClick={this.handlePredict}>
+                  Upload!
+                </button>
+            </div>
+
+            
+
             </Container>
         </React.Fragment>
     )

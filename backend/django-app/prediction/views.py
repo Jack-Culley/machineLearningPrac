@@ -10,9 +10,12 @@ from rest_framework.permissions import IsAuthenticated
 from prediction.apps import PredictionConfig
 import pandas as pd
 
+from PIL import Image
+import numpy as np
+
 # Create your views here.
 # Class based view to predict based on IRIS model
-class IRIS_Model_Predict(APIView):
+class CNN_Predict(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -29,5 +32,5 @@ class IRIS_Model_Predict(APIView):
         y_pred = pd.Series(y_pred)
         target_map = {0: 'setosa', 1: 'versicolor', 2: 'virginica'}
         y_pred = y_pred.map(target_map).to_numpy()
-        response_dict = {"Predicted Iris Species": y_pred[0]}
+        response_dict = {"Predicted Object": y_pred[0]}
         return Response(response_dict, status=200)
