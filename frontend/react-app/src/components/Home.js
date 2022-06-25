@@ -4,7 +4,7 @@ import * as settings from '../settings';
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Paper, Typography, Slider, Button } from '@material-ui/core';
+import { Container, Grid, Paper, Typography, Button } from '@material-ui/core';
 
 // ########################################################
 // Material UI inline styles
