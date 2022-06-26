@@ -43,60 +43,49 @@ function Home(props) {
     const classes = useStyles();
     const token = useSelector((state) => state.auth.token)
 
-    // React hook state variable - Dimensions
+    // React hook state variable - Image
     const [image, setImage] = React.useState(null);
 
     // React hook state variable - Prediction
     const [prediction, setPrediction] = React.useState("No Prediction")
 
-    // Function to update the Dimensions state upon slider value change
     const handleFileSelect = event => {
         setImage(event.target.files[0])
     };
 
-    // Function to make the predict API call and update the state variable - Prediction 
-    const handlePredict = event => {
-        //const formData = new FormData();
+    const handleUpload = () => {
 
-        //formData.append("file", image, image.name);
+        console.log(image)
 
-        console.log(props.token)
-
-        //Axios variables required to call the predict API
-        let headers = { 'Authorization': `Token ${token}` };
-        let url = settings.API_SERVER + '/api/predict/';
+        //Axios variables required to call the upload API
+        let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
+        let url = settings.API_SERVER + '/api/upload/';
         let method = 'post';
-        let predictionData = new FormData();
-        predictionData.append("image", image);
-        let config = { headers, method, url, data: predictionData };
+        let imageData = new FormData();
+        imageData.append("image_url", image.name);
+        let ind = image.name.indexOf('.');
+        imageData.append("title", image.name.substring(ind));
+        imageData.append("upload_date", new Date())
+        
+        let config = { headers, method, url, data: imageData };
 
-        //Axios predict API call
+        //Axios upload API call
         axios(config).then(
-            res => {setPrediction(res.data["Predicted Object"])
+            res => {setPrediction(res)
             }).catch(
                 error => {alert(error)}
                 )
-
-        return (
-            <div>
-                <h2>File Details:</h2>
-                    <p>File Name: {image.name}</p>             
-                    <p>File Type: {image.type}</p>
-            </div>
-        );
     }
 
     return (
         <React.Fragment>
             <CssBaseline />
             <Container fixed className={classes.container}>
-                
-
-
+            
             <div>
-                <input type="file" onChange={handleFileSelect} />
-                <button onClick={handlePredict}>
-                  Upload!
+                <input type="file" accept="image/jpeg, image/png" onChange={handleFileSelect} />
+                <button onClick={handleUpload}>
+                  Upload
                 </button>
                 {prediction}
             </div>

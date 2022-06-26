@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     
     'prediction',
     'users',
-    'Image',
 ]
 
 MIDDLEWARE = [
