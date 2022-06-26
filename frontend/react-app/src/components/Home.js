@@ -55,23 +55,25 @@ function Home(props) {
 
     const handleUpload = () => {
 
-        console.log(image)
+        console.log(new Date())
 
         //Axios variables required to call the upload API
         let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
-        let url = settings.API_SERVER + '/api/upload/';
+        let url = settings.API_SERVER + '/api/image/upload/';
         let method = 'post';
         let imageData = new FormData();
         imageData.append("image_url", image.name);
         let ind = image.name.indexOf('.');
         imageData.append("title", image.name.substring(ind));
-        imageData.append("upload_date", new Date())
+        let now = new Date();
+        imageData.append("upload_date", now.toISOString())
         
         let config = { headers, method, url, data: imageData };
 
         //Axios upload API call
         axios(config).then(
-            res => {setPrediction(res)
+            res => {
+                console.log(res.data)
             }).catch(
                 error => {alert(error)}
                 )
@@ -87,7 +89,7 @@ function Home(props) {
                 <button onClick={handleUpload}>
                   Upload
                 </button>
-                {prediction}
+                {prediction}NodeJs - Axios
             </div>
 
             
