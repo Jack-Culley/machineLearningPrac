@@ -22,6 +22,7 @@ class ImageUpload(APIView):
 
     def post(self, request, format=None):
         print(request.data)
+        print(request.user.id)
         serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
