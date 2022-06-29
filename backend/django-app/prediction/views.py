@@ -20,12 +20,14 @@ class ImageUpload(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
+
+    #TODO add a check to make sure user is valid since we set blank=True to the model
     def post(self, request, format=None):
         print(request.data)
         print(request.user.id)
         serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(creator=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

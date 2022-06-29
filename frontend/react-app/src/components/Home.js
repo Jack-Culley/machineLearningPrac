@@ -22,16 +22,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
         padding: theme.spacing(2), paddingLeft: theme.spacing(4),
         color: theme.palette.primary.main,
-    },
-    sliders: {
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(2),
-        paddingLeft: theme.spacing(4),
-        paddingRight: theme.spacing(4),
-        marginBottom: theme.spacing(2),
-    },
-    slidertop: {
-        marginTop: theme.spacing(4),
     }
 }));
 
@@ -56,7 +46,6 @@ function Home(props) {
     const handleUpload = () => {
 
         console.log(image)
-
         //Axios variables required to call the upload API
         let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
         let url = settings.API_SERVER + '/api/image/upload/';
@@ -64,7 +53,7 @@ function Home(props) {
         let imageData = new FormData();
         imageData.append("image_url", image);
         let ind = image.name.indexOf('.');
-        imageData.append("title", image.name.substring(ind));
+        imageData.append("title", image.name.substring(0, ind));
         let now = new Date();
         imageData.append("upload_date", now.toISOString())
         

@@ -7,7 +7,7 @@ def upload_to(instance, filename):
 
 class ImageModel(models.Model):
     creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="images")
+        User, on_delete=models.CASCADE, related_name="images", blank=True)
     title = models.CharField(
         max_length=80, blank=False, null=False)
     image_url = models.ImageField(upload_to=upload_to, blank=True, null=True)
