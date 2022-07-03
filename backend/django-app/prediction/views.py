@@ -32,9 +32,15 @@ class ImageUpload(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # def get(self, request):
-    #     images = ImageModel.objects.filter()
-    #     pass
+    def get(self, request):
+        images = ImageModel.objects.filter(creator=request.user)
+        images = images.values()
+        #serializer = ImageSerializer(data=images)
+        #if serializer.is_valid():
+        return Response(images, status=status.HTTP_200_OK)
+        #else:
+            #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
     # def put(self, request):

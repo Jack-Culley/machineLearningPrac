@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Paper, Typography, Button } from '@material-ui/core';
+import Gallery from './Gallery.js';
 
 // ########################################################
 // Material UI inline styles
@@ -79,6 +80,11 @@ function Home(props) {
                   Upload
                 </button>
             </div>
+
+            <Gallery>
+
+            </Gallery>
+
 
             
 
