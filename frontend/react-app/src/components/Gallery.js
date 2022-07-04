@@ -33,6 +33,23 @@ function Gallery() {
                 error => {alert(error)}
                 )
     }
+
+    const handleDelete = () => {
+        //Axios variables required to call the upload API
+        let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
+        let url = settings.API_SERVER + '/api/image/delete/';
+        let method = 'delete';
+        let config = { headers, method, url };
+
+        //Axios upload API call
+        axios(config).then(
+            res => {
+                setImages(res.data)
+                console.log(res.data)
+            }).catch(
+                error => {alert(error)}
+                )
+    }
     
     const path = ' http://127.0.0.1:8000/'
 
@@ -49,6 +66,9 @@ function Gallery() {
                         <h2>{image.title}</h2>
                         <h3>Prediction: {image.pred_label}</h3>
                         <p>Uploaded on: {image.upload_date}</p>
+                        <button onClick={handleDelete}>
+                            Delete
+                        </button>
                     </React.Fragment>
                 ))}
             </React.Fragment>

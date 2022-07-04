@@ -15,3 +15,19 @@ frontend/react-app/node_modules/.cache/default-development/13.pack
 frontend/react-app/node_modules/.cache/default-development/14.pack
 frontend/react-app/node_modules/.cache/default-development/index.pack
 frontend/react-app/node_modules/.cache/default-development/index.pack.old
+
+# Byte-compiled / optimized / DLL files
+*/__pycache__/
+*.py[cod]
+
+# Django stuff:
+*.log
+*.pot
+
+#local images
+*/static
+backend/django-app/static/images/airplane.jpeg
+backend/django-app/prediction/__pycache__/models.cpython-38.pyc
+backend/django-app/mainapp/__pycache__/urls.cpython-38.pyc
+.gitignore
+backend/django-app/mainapp/__pycache__/settings.cpython-38.pyc

@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 
 
 def upload_to(instance, filename):
-    return 'images/{filename}'.format(filename=filename)
+    #return 'static/images/{filename}'.format(filename=filename)
+    #return 'images/{filename}'.format(filename=filename)
+    return '{filename}'.format(filename=filename)
+
 
 class ImageModel(models.Model):
     creator = models.ForeignKey(
