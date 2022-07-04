@@ -64,9 +64,12 @@ function Home(props) {
         axios(config).then(
             res => {
                 console.log(res.data)
+                
             }).catch(
                 error => {alert(error)}
                 )
+
+        
     }
 
     return (

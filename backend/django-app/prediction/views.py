@@ -23,7 +23,6 @@ class ImageUpload(APIView):
 
     #TODO add a check to make sure user is valid since we set blank=True to the model
     def post(self, request, format=None):
-        print(request.data)
         print(request.user.id)
         serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
@@ -35,26 +34,19 @@ class ImageUpload(APIView):
     def get(self, request):
         images = ImageModel.objects.filter(creator=request.user)
         images = images.values()
-        #serializer = ImageSerializer(data=images)
-        #if serializer.is_valid():
         return Response(images, status=status.HTTP_200_OK)
-        #else:
-            #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
 
+    def delete(self, request):
+        pass
 
-    # def put(self, request):
-    #     data = request.data
-    #     keys = []
-    #     values = []
-    #     for key in data:
-    #         keys.append(key)
-    #         values.append(data[key])
-    #     X = pd.Series(values).to_numpy().reshape(1, -1)
-    #     loaded_mlmodel = PredictionConfig.mlmodel 
-    #     y_pred = loaded_mlmodel.predict(X)
-    #     y_pred = pd.Series(y_pred)
-    #     target_map = {0: 'setosa', 1: 'versicolor', 2: 'virginica'}
-    #     y_pred = y_pred.map(target_map).to_numpy()
-    #     response_dict = {"Predicted Object": y_pred[0]}
-    #     return Response(response_dict, status=200)
+    def put(self, request):
+        print(request.data)
+        loaded_mlmodel = PredictionConfig.mlmodel 
+        with Image.open(request.data.image_url) as im:
+            resizedImage = im.resize((32,32))
+            pixel_array = np.array(resizedImage)
+            y_pred = loaded_mlmodel.predict(pixel_array)
+            #y_pred = pd.Series(y_pred)
+            target_array = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+            prediction = target_array[y_pred.index(1)]
+
