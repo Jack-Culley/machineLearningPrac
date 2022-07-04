@@ -11,6 +11,7 @@ function Gallery() {
     const [images, setImages] = useState(null)
     const token = useSelector((state) => state.auth.token)
 
+    //TODO fix the redundant API calls
     useEffect(() => {
         handleDownload()
     }, []);
@@ -34,17 +35,19 @@ function Gallery() {
                 )
     }
 
-    const handleDelete = () => {
+    const handleDelete = (event) => {
+        console.log(event.target.attributes.form)
         //Axios variables required to call the upload API
         let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
         let url = settings.API_SERVER + '/api/image/delete/';
         let method = 'delete';
-        let config = { headers, method, url };
+        let image = new FormData();
+        image.append("image_url", event.target.attributes.form.value)
+        let config = { headers, method, url, data: image };
 
         //Axios upload API call
         axios(config).then(
             res => {
-                setImages(res.data)
                 console.log(res.data)
             }).catch(
                 error => {alert(error)}
@@ -66,9 +69,10 @@ function Gallery() {
                         <h2>{image.title}</h2>
                         <h3>Prediction: {image.pred_label}</h3>
                         <p>Uploaded on: {image.upload_date}</p>
-                        <button onClick={handleDelete}>
+                        <button onClick={handleDelete} form={image.image_url}>
                             Delete
                         </button>
+                        <br></br>
                     </React.Fragment>
                 ))}
             </React.Fragment>

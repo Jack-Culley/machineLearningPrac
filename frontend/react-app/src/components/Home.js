@@ -67,7 +67,30 @@ function Home(props) {
                 
             }).catch(
                 error => {alert(error)}
-                )
+                ).then(
+                    () => {
+                        let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
+                        let url = settings.API_SERVER + '/api/image/predict/';
+                        let method = 'put';
+                        let imageData = new FormData();
+                        imageData.append("image_url", image);
+                        let ind = image.name.indexOf('.');
+                        imageData.append("title", image.name.substring(0, ind));
+                        let now = new Date();
+                        imageData.append("upload_date", now.toISOString())
+                        
+                        let config = { headers, method, url, data: imageData };
+
+                        //Axios upload API call
+                        axios(config).then(
+                            res => {
+                                console.log(res.data)
+                                
+                            }).catch(
+                                error => {alert(error)}
+                                )
+                        }
+                 )
 
         
     }

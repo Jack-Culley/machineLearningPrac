@@ -14,7 +14,6 @@ from prediction.serializers import ImageSerializer
 from prediction.models import ImageModel
 from rest_framework.parsers import MultiPartParser, FormParser
 
-
 class ImageUpload(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -23,7 +22,6 @@ class ImageUpload(APIView):
 
     #TODO add a check to make sure user is valid since we set blank=True to the model
     def post(self, request, format=None):
-        print(request.user.id)
         serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(creator=request.user)
@@ -37,16 +35,29 @@ class ImageUpload(APIView):
         return Response(images, status=status.HTTP_200_OK)
 
     def delete(self, request):
-        pass
+        print(request.data)
+        obj = ImageModel.objects.filter(creator=request.user, image_url=request.data.get('image_url')).delete()
+        return Response(obj, status=status.HTTP_200_OK)
+        
 
     def put(self, request):
-        print(request.data)
-        loaded_mlmodel = PredictionConfig.mlmodel 
-        with Image.open(request.data.image_url) as im:
-            resizedImage = im.resize((32,32))
-            pixel_array = np.array(resizedImage)
-            y_pred = loaded_mlmodel.predict(pixel_array)
-            #y_pred = pd.Series(y_pred)
-            target_array = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-            prediction = target_array[y_pred.index(1)]
+        serializer = ImageSerializer(data=request.data)
+        if serializer.is_valid():
+            loaded_mlmodel = PredictionConfig.mlmodel 
+            with Image.open(request.data.get('image_url')) as im:
+                resizedImage = im.resize((32,32))
+                pixel_array = np.array(resizedImage)
+                pixel_array = np.expand_dims(pixel_array, axis=0)
+                y_pred = loaded_mlmodel.predict(pixel_array)
+                print(y_pred)
+                y_pred = np.rint(y_pred)
+                print(y_pred)
+                #y_pred = pd.Series(y_pred)
+                target_array = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+                prediction = target_array[np.where(y_pred == 1.)[0][0]]
+                serializer.save(creator=request.user, pred_label=prediction)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
