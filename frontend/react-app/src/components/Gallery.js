@@ -49,6 +49,7 @@ function Gallery() {
         axios(config).then(
             res => {
                 console.log(res.data)
+                window.location.reload()
             }).catch(
                 error => {alert(error)}
                 )

@@ -17,15 +17,18 @@ frontend/react-app/node_modules/.cache/default-development/index.pack
 frontend/react-app/node_modules/.cache/default-development/index.pack.old
 
 # Byte-compiled / optimized / DLL files
-*/__pycache__/
+__pycache__/
 *.py[cod]
+*.pyc
 
 # Django stuff:
 *.log
 *.pot
 
 #local images
-*/static
+*.jpeg
+*.jpg
+/home/jackculley/VSCode/machineLearningPrac/backend/django-app/static/images/*
 backend/django-app/static/images/airplane.jpeg
 backend/django-app/prediction/__pycache__/models.cpython-38.pyc
 backend/django-app/mainapp/__pycache__/urls.cpython-38.pyc
