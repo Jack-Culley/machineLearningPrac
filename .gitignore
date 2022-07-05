@@ -15,3 +15,7 @@ frontend/react-app/node_modules/.cache/default-development/13.pack
 frontend/react-app/node_modules/.cache/default-development/14.pack
 frontend/react-app/node_modules/.cache/default-development/index.pack
 frontend/react-app/node_modules/.cache/default-development/index.pack.old
+**__pycache__/
+*.pyc
+*.jpeg
+*.jpg
