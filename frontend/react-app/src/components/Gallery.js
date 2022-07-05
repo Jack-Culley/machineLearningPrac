@@ -55,7 +55,7 @@ function Gallery() {
                 )
     }
     
-    const path = ' http://127.0.0.1:8000/'
+    const path = 'http://127.0.0.1:8000/'
 
     if(images == null){
         return (
