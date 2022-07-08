@@ -4,7 +4,7 @@ import * as settings from '../settings';
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Paper, Typography, Button } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 import Gallery from './Gallery.js';
 
 // ########################################################
@@ -37,9 +37,6 @@ function Home(props) {
     // React hook state variable - Image
     const [image, setImage] = React.useState(null);
 
-    // React hook state variable - Prediction
-    const [prediction, setPrediction] = React.useState("No Prediction")
-
     const handleFileSelect = event => {
         setImage(event.target.files[0])
     };
@@ -54,7 +51,9 @@ function Home(props) {
         let imageData = new FormData();
         imageData.append("image_url", image);
         let ind = image.name.indexOf('.');
-        imageData.append("title", image.name.substring(0, ind));
+        let title = image.name.substring(0, ind)
+        title = title.charAt(0) + title.slice(1);
+        imageData.append("title", title);
         let now = new Date();
         imageData.append("upload_date", now.toISOString())
         
@@ -75,22 +74,14 @@ function Home(props) {
     return (
         <React.Fragment>
             <CssBaseline />
-            <Container fixed className={classes.container}>
-            
-            <div>
-                <input type="file" accept="image/jpeg, image/png" onChange={handleFileSelect} />
+
+            <input type="file" accept="image/jpeg, image/png" onChange={handleFileSelect} />
                 <button onClick={handleUpload}>
                   Upload
                 </button>
-            </div>
 
-            <Gallery>
-
-            </Gallery>
-
-
-            
-
+            <Container className={classes.container}>
+                <Gallery/>
             </Container>
         </React.Fragment>
     )

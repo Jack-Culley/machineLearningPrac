@@ -2,15 +2,53 @@ import React from 'react'
 import axios from 'axios';
 import * as settings from '../settings';
 import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
 
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
 
-
+const useStyles = makeStyles((theme) => ({
+    gallery: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      textAlign: 'center',
+    },
+    image: {
+      margin: theme.spacing(5),
+      borderRadius: 9,
+    },
+    form: {
+      width: '100%', 
+      marginTop: theme.spacing(1),
+    },
+    upload: {
+      margin: theme.spacing(3, 0, 2),
+    },
+    success: {
+      color: theme.palette.success.main,
+    }
+  }));
 
 function Gallery() {
     const [images, setImages] = useState(null)
     const token = useSelector((state) => state.auth.token)
-
+    const classes = useStyles();
     //TODO fix the redundant API calls
     useEffect(() => {
         handleDownload()
@@ -36,7 +74,7 @@ function Gallery() {
     }
 
     const handleDelete = (event) => {
-        console.log(event.target.attributes.form)
+        console.log(event.props)
         //Axios variables required to call the upload API
         let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
         let url = settings.API_SERVER + '/api/image/delete/';
@@ -63,20 +101,44 @@ function Gallery() {
         )
     } else {
         return (
-            <React.Fragment>
+            <ImageList sx={{ width: 1000, height: 450 }}>
+                <ImageListItem key="Subheader" cols={2}>
+                    <ListSubheader component="div">Put buttons here?</ListSubheader>
+                </ImageListItem>
+                
                 {images.map(image => (
-                    <React.Fragment key={image.id}>
-                        <img src={path.concat(image.image_url)} alt={image.title} />
-                        <h2>{image.title}</h2>
-                        <h3>Prediction: {image.pred_label}</h3>
+                    // <React.Fragment key={image.id}>
+                    <ImageListItem key={image.id}>
+                        <img
+                            // src={`${item.img}?w=248&fit=crop&auto=format`}
+                            // srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                            src={path.concat(image.image_url)}
+                            alt={image.title}
+                            loading="lazy"
+                        />
+                        <ImageListItemBar
+                            title={image.title}
+                            subtitle={image.pred_label}
+                            uploadDate={image.upload_date}
+                            actionIcon={
+                            <IconButton
+                                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                aria-label={`Delete ${image.title}`}
+                                onClick={handleDelete}
+                                id={image.image_url}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                            }
+                        />
                         <p>Uploaded on: {image.upload_date}</p>
-                        <button onClick={handleDelete} form={image.image_url}>
+                        {/* <button onClick={handleDelete} form={image.image_url}>
                             Delete
-                        </button>
-                        <br></br>
-                    </React.Fragment>
+                        </button> */}
+                    </ImageListItem>
+                    //</React.Fragment>
                 ))}
-            </React.Fragment>
+            </ImageList>
         )
     }
 }
