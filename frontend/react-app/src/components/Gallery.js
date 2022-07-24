@@ -101,13 +101,8 @@ function Gallery() {
         )
     } else {
         return (
-            <ImageList sx={{ width: 1000, height: 450 }}>
-                <ImageListItem key="Subheader" cols={2}>
-                    <ListSubheader component="div">Put buttons here?</ListSubheader>
-                </ImageListItem>
-                
+            <ImageList gap={10} cols={5} sx={{ width: '100%', height: '100%', '& .MuiImageList-quilted':{paddingTop: '20px', paddingBottom:'20px'}}} variant='quilted'>
                 {images.map(image => (
-                    // <React.Fragment key={image.id}>
                     <ImageListItem key={image.id}>
                         <img
                             // src={`${item.img}?w=248&fit=crop&auto=format`}
@@ -118,8 +113,9 @@ function Gallery() {
                         />
                         <ImageListItemBar
                             title={image.title}
-                            subtitle={image.pred_label}
-                            uploadDate={image.upload_date}
+                            subtitle={`Classification: ${image.pred_label}`}
+                            uploaddate={image.upload_date}
+                            sx={{height: '20%', '& .MuiImageListItemBar-subtitle':{paddingTop: '5px'}}}
                             actionIcon={
                             <IconButton
                                 sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
@@ -131,12 +127,10 @@ function Gallery() {
                             </IconButton>
                             }
                         />
-                        <p>Uploaded on: {image.upload_date}</p>
                         {/* <button onClick={handleDelete} form={image.image_url}>
                             Delete
                         </button> */}
                     </ImageListItem>
-                    //</React.Fragment>
                 ))}
             </ImageList>
         )

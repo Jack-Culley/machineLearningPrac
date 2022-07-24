@@ -6,6 +6,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
 import Gallery from './Gallery.js';
+import Button from '@mui/material/Button';
+import Input from '@mui/material/Input';
 
 // ########################################################
 // Material UI inline styles
@@ -15,6 +17,8 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: "75%",
         marginTop: "15vh",
         marginBottom: "10vh",
+        marginRight: "15vh",
+        marginLeft: "15vh",
         borderRadius: '6px',
         backgroundColor: theme.palette.action.disabledBackground,
     },
@@ -74,11 +78,12 @@ function Home(props) {
     return (
         <React.Fragment>
             <CssBaseline />
-
-            <input type="file" accept="image/jpeg, image/png" onChange={handleFileSelect} />
-                <button onClick={handleUpload}>
+            
+                <Input type="file" accept="image/jpeg, image/png" onChange={handleFileSelect} />
+            
+                <Button variant='contained' onClick={handleUpload}>
                   Upload
-                </button>
+                </Button>
 
             <Container className={classes.container}>
                 <Gallery/>
