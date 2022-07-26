@@ -9,63 +9,36 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Search';
-import SearchIcon from '@mui/icons-material/Search';
-import { styled, alpha } from '@mui/material/styles';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/authActions';
+import Avatar from '@mui/material/Avatar';
+import logo from './assets/logopng.png'
+import { makeStyles } from '@material-ui/core/styles';
+import SvgIcon from '@mui/material/SvgIcon';
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
+const GitHubIcon = (props) => (
+    <SvgIcon {...props}>
+      <svg>
+        {<path
+            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>}
+      </svg>
+    </SvgIcon>
+);
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
+const useStyles = makeStyles((theme) => ({
+  sizeAvatar: {
+    height: theme.spacing(100),
+    width: theme.spacing(100),
   },
 }));
 
 export default function TopBar(props) {
   const isAuthenticated = useSelector((state) => state.auth.token !== null && typeof state.auth.token !== 'undefined');
   const dispatch = useDispatch();
-
-  function handleClick(e) {
-    e.preventDefault();
-    dispatch(actions.authLogout());
-  }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -79,6 +52,13 @@ export default function TopBar(props) {
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
+  };
+
+  const handleMenuCloseLogout = (e) => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    e.preventDefault();
+    dispatch(actions.authLogout());
   };
 
   const handleMenuClose = () => {
@@ -107,8 +87,8 @@ export default function TopBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Change Password</MenuItem>
+      <MenuItem onClick={handleMenuCloseLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose} component='a' href="/update_password/">Change Password</MenuItem>
     </Menu>
   );
 
@@ -132,10 +112,10 @@ export default function TopBar(props) {
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge color="error">
-            <MailIcon />
+            <GitHubIcon component='a' href="https://github.com/Jack-Culley/machineLearningPrac" target='_blank'/>
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Github</p>
       </MenuItem>
       <MenuItem>
         <IconButton
@@ -164,22 +144,25 @@ export default function TopBar(props) {
     </Menu>
   );
 
+  const classes = useStyles();
   // {isAuthenticated ? <Button color="inherit" variant="outlined" onClick={handleClick} sx={{ flexGrow: 1, justifyContent: "space-between" }}>Logout</Button> : null}
   // {isAuthenticated ? <Button color="inherit" variant="outlined" href="/update_password/" sx={{ flexGrow: 1, justifyContent: "space-between" }}>Change Password</Button> : null}
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="relative">
         <Toolbar>
-          <IconButton
+          <Avatar
             size="large"
             edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <img src={'/home/jackculley/VSCode/machineLearningPrac/frontend/react-app/public/assets/logo.png'} alt="Jack's logo"/>
-          </IconButton>
+            sx={{ mr: 2 , width: 70, height: 70}}
+            component='a'
+            href='/'
+            src={logo}
+            className={classes.sizeAvatar}
+            alt="Jack's logo"
+          />
+          
           <Typography
             variant="h6"
             noWrap
@@ -188,56 +171,26 @@ export default function TopBar(props) {
           >
             Smart Photo Library
           </Typography>
-          {isAuthenticated ? 
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-          : null}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge color="error">
-                <MailIcon />
-              </Badge>
+            <IconButton size="large"
+                edge="end"
+                color="inherit">
+                <GitHubIcon component='a' href="https://github.com/Jack-Culley/machineLearningPrac" target='_blank' sx={{color: 'white', mr: 1}}/>
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
+            {isAuthenticated ?
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              : null}
           </Box>
         </Toolbar>
       </AppBar>

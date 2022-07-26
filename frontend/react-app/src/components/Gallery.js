@@ -30,8 +30,7 @@ const useStyles = makeStyles((theme) => ({
       textAlign: 'center',
     },
     image: {
-      margin: theme.spacing(5),
-      borderRadius: 9,
+      borderRadius: 3,
     },
     form: {
       width: '100%', 
@@ -101,7 +100,7 @@ function Gallery() {
         )
     } else {
         return (
-            <ImageList gap={10} cols={5} sx={{ width: '100%', height: '100%', '& .MuiImageList-quilted':{paddingTop: '20px', paddingBottom:'20px'}}} variant='quilted'>
+            <ImageList gap={5} cols={4} sx={{ width: '100%', height: '100%', '& .MuiImageList-quilted':{paddingTop: '5px', paddingBottom:'5px'}}} variant='quilted'>
                 {images.map(image => (
                     <ImageListItem key={image.id}>
                         <img
@@ -110,6 +109,7 @@ function Gallery() {
                             src={path.concat(image.image_url)}
                             alt={image.title}
                             loading="lazy"
+                            className={classes.image}
                         />
                         <ImageListItemBar
                             title={image.title}
