@@ -73,13 +73,13 @@ function Gallery() {
     }
 
     const handleDelete = (event) => {
-        console.log(event.props)
+        console.log(event.target.id)
         //Axios variables required to call the upload API
         let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
         let url = settings.API_SERVER + '/api/image/delete/';
         let method = 'delete';
         let image = new FormData();
-        image.append("image_url", event.target.attributes.form.value)
+        image.append("image_url", event.target.id)
         let config = { headers, method, url, data: image };
 
         //Axios upload API call

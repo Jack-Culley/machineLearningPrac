@@ -129,13 +129,13 @@ function Home(props) {
     }
 
     return (
-        <React.Fragment>
+        <Box sx={{ flexDirection: 'column', alignItems: 'center', display: 'flex' }}>
             <CssBaseline />
-            <Box sx={{ flexGrow: 1, height: "10"}}>
-                <AppBar position="sticky" className={classes.secondaryBar} sx={{ top: 0 , alignItems: 'center', backgroundColor: '#fff' }}>
+            <Box sx={{ flexGrow: 1, height: "10", flexDirection: 'column', alignItems: 'center', position: 'sticky', width: '100%', top: 0, zIndex: 10 }}>
+                <AppBar position="sticky" className={classes.secondaryBar} sx={{ top: 0 , alignItems: 'center', backgroundColor: '#000000b3' }}>
                     <Toolbar>
                     
-                        <Search>
+                        <Search sx={{ visibility: 'hidden' }}>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
@@ -156,7 +156,7 @@ function Home(props) {
             <Container className={classes.container}>
                 <Gallery/>
             </Container>
-        </React.Fragment>
+        </Box>
     )
 }
 
