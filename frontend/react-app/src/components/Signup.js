@@ -15,6 +15,20 @@ import { useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
 import * as actions from '../store/authActions';
 
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+
 function Login() {
 
   const dispatch = useDispatch();
@@ -107,6 +121,7 @@ function Login() {
               </Grid>
             </form>
           </Box>
+          <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </Container>
     );

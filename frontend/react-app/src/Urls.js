@@ -21,6 +21,9 @@ function Urls() {
                     <Route exact path="/update_password/" element={
                         localStorage.getItem('token') !== null && localStorage.getItem('token') !== undefined ? <PasswordUpdate /> : <Navigate to={{pathname: "/login/", replace: true}} />
                     }/>
+                    <Route exact path="/sign-up/" element={
+                        !isAuthenticated ? <Login /> : <Navigate to={{pathname: "/", replace: true}}/>
+                    }/>
                     <Route path="*" element={
                         <Navigate to={{
                             pathname: "/login/",
