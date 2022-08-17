@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Home from './components/Home';
 import PasswordUpdate from './components/PasswordUpdate';
 import Login from "./components/Login";
+import Signup from "./components/Signup";
 import { useSelector } from 'react-redux';
 
 
@@ -22,7 +23,7 @@ function Urls() {
                         localStorage.getItem('token') !== null && localStorage.getItem('token') !== undefined ? <PasswordUpdate /> : <Navigate to={{pathname: "/login/", replace: true}} />
                     }/>
                     <Route exact path="/sign-up/" element={
-                        !isAuthenticated ? <Login /> : <Navigate to={{pathname: "/", replace: true}}/>
+                        !isAuthenticated ? <Signup /> : <Navigate to={{pathname: "/", replace: true}}/>
                     }/>
                     <Route path="*" element={
                         <Navigate to={{

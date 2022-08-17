@@ -3,60 +3,84 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { FormControlLabel, Checkbox, Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
-
-
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import * as actions from '../store/authActions';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import axios from 'axios';
+import * as settings from '../settings';
+import { useSelector } from 'react-redux';
 
 
-function Login() {
+const useStyles = makeStyles((theme) => ({
+    form: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+}));
+
+function Signup() {
 
   const dispatch = useDispatch();
-
+  const classes = useStyles();
   const [username, setuserName] = React.useState(null);
-  const [password, setPassword] = React.useState(null);
+  const [password1, setPassword1] = React.useState(null);
+  const [password2, setPassword2] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+  const [firstName, setFirstName] = React.useState(null);
+  const [lastName, setLastName] = React.useState(null);
+
 
   const handleFormFieldChange = (event) => {
     switch (event.target.id) {
       case 'username': setuserName(event.target.value); break;
-      case 'password': setPassword(event.target.value); break;
+      case 'password1': setPassword1(event.target.value); break;
+      case 'password2': setPassword2(event.target.value); break;
+      case 'email' : setEmail(event.target.value); break;
+      case 'firstName' : setFirstName(event.target.value); break;
+      case 'lastName' : setLastName(event.target.value); break;
       default: return null;
     }
-
   };
+
+  const token = useSelector((state) => state.auth.token)
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(actions.authLogin(username, password));
+    if (password1 !== password2) {
+        alert("Passwords don't match")
+      } else {
+        let headers = { 'Authorization': `Token ${token}` };
+        let method = 'post';
+        let url = settings.API_SERVER + '/api/auth/sign-up/';
+        let passwordFormData = new FormData();
+        passwordFormData.append("password", password1);
+        passwordFormData.append("firstname", firstName);
+        passwordFormData.append("lastname", lastName);
+        passwordFormData.append("username", username);
+        passwordFormData.append("email", email);
+        let config = { headers, method, url, data: passwordFormData};
+        //Axios sign-up API call
+        axios(config).then(res => {
+            dispatch(actions.authLogin(username, password1));
+            console.log(res)
+        }).catch(
+          error => {
+            alert(error)
+          })
+      }
   }
 
-  // React.useEffect(() => {
-  //   if(isAuthenticated) { navigate('/', {replace: true}) } 
-  // }, [])
-
   return (
-    <Container component="main" maxWidth="xs">
-        <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="md">
           <CssBaseline />
           <Box
             sx={{
@@ -70,61 +94,88 @@ function Login() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign up
             </Typography>
-            <form noValidate onSubmit={handleSubmit}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="User Name"
-                name="username"
-                autoComplete="username"
-                autoFocus
-                onChange={handleFormFieldChange}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={handleFormFieldChange}
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+            <form noValidate onSubmit={handleSubmit} className={classes.form}>
+            <Container component="main" maxWidth="md" sx={{ display: 'flex', flexDirection: 'row' }}>    
+                <Container component="main" maxWidth="md">
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="firstname"
+                        label="First Name"
+                        name="firstname"
+                        autoComplete="first_name"
+                        autoFocus
+                        onChange={handleFormFieldChange}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        name="email"
+                        autoComplete="email"
+                        onChange={handleFormFieldChange}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password1"
+                        label="Password"
+                        type="password"
+                        id="password1"
+                        onChange={handleFormFieldChange}
+                    />
+                </Container>
+                <Container component="main" maxWidth="xs">
+                <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="lastname"
+                        label="Last Name"
+                        name="lastname"
+                        autoComplete="last_name"
+                        onChange={handleFormFieldChange}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="username"
+                        label="User Name"
+                        name="username"
+                        autoComplete="username"
+                        onChange={handleFormFieldChange}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password2"
+                        label="Confirm Password"
+                        type="password"
+                        id="password2"
+                        onChange={handleFormFieldChange}
+                    />
+                </Container>
+              </Container>
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 6, mb: 2, width: '25%' }}
               >
-                Sign In
+                Sign Up
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="/sign-up/" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
             </form>
           </Box>
-          <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </Container>
     );
   }
-  
-  export default connect(null, null)(Login);
+
+export default connect(null, null)(Signup);
