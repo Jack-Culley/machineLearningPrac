@@ -177,19 +177,22 @@ function Gallery() {
         console.log(event.target.parentElement.id)
         console.log(event)
         //Axios variables required to call the upload API
+        let image_url = event.target.id;
+        if(image_url === ""){
+            image_url = event.target.parentElement.id
+        } 
+
         let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
         let url = settings.API_SERVER + '/api/image/delete/';
         let method = 'delete';
         let image = new FormData();
-        image.append("image_url", event.target.parentElement.id)
+        image.append("image_url", image_url)
         let config = { headers, method, url, data: image };
 
         //Axios upload API call
         axios(config).then(
             res => {
                 console.log(res.data)
-                //window.location.reload()
-                //handleDownload()
             }).catch(
                 error => {alert(error)}
                 )
