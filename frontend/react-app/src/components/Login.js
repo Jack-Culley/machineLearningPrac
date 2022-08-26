@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { FormControlLabel, Checkbox, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 
@@ -94,13 +94,13 @@ function Login() {
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
-                  <Link href="/sign-up/" variant="body2">
+                  <Link href="/sign-up/" variant="body2" align="center">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

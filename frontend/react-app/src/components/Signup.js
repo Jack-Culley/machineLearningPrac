@@ -14,6 +14,7 @@ import * as actions from '../store/authActions';
 import axios from 'axios';
 import * as settings from '../settings';
 import { useSelector } from 'react-redux';
+import Link from '@mui/material/Link';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -187,6 +188,9 @@ function Signup() {
                 Sign Up
               </Button>
             </form>
+            <Link href="/login/" variant="body2">
+                    {"Already have an account? Log in"}
+            </Link>
           </Box>
         </Container>
       </Container>
