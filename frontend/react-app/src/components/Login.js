@@ -81,10 +81,10 @@ function Login() {
                 autoComplete="current-password"
                 onChange={handleFormFieldChange}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth

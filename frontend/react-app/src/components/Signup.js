@@ -182,7 +182,7 @@ function Signup() {
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ mt: 6, mb: 2, width: '25%' }}
+                sx={{ mt: 6, width: '25%' }}
               >
                 Sign Up
               </Button>
