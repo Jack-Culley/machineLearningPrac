@@ -52,10 +52,21 @@ function Signup() {
 
   const token = useSelector((state) => state.auth.token)
 
+  const containsNumber = new RegExp('[0-9]')
+  const containsLetter = new RegEx('[a-zA-Z]')
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password1 !== password2) {
         alert("Passwords don't match")
+    } else if (!containsNumber.test(password1)) {
+        alert("Password must contain a number")
+    } else if(!containsLetter.test(password1)) {
+        alert("Password must contain a letter")
+    } else if(password1.length < 8){
+        alert("Password must be at least 8 characters long")
+    } else if(!firstName || !lastName || !username || !email || !password1 || !password2){
+        alert("All fields marked with * are required")
       } else {
         let headers = { 'Authorization': `Token ${token}` };
         let method = 'post';
@@ -73,7 +84,7 @@ function Signup() {
             console.log(res)
         }).catch(
           error => {
-            alert(error)
+            console.log(error)
           })
       }
   }
@@ -129,6 +140,8 @@ function Signup() {
                         type="password"
                         id="password1"
                         onChange={handleFormFieldChange}
+                        error={password1 !== password2}
+                        helperText={password1 !== password2 ? "Passwords don't match" : "Password must contain both letters and numbers and be 8 characters long"}
                     />
                 </Container>
                 <Container component="main" maxWidth="xs">
@@ -161,6 +174,8 @@ function Signup() {
                         type="password"
                         id="password2"
                         onChange={handleFormFieldChange}
+                        error={password1 !== password2}
+                        helperText={password1 !== password2 ? "Passwords don't match" : null}
                     />
                 </Container>
               </Container>

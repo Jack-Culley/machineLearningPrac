@@ -101,6 +101,9 @@ function Home(props) {
     const handleUpload = () => {
 
         console.log(image)
+        if(!token){
+            alert("Session timed out. Log back in")
+        }
         //Axios variables required to call the upload API
         let headers = { 'Authorization': `Token ${token}`, "Content-Type": "multipart/form-data" };
         let url = settings.API_SERVER + '/api/image/upload/';

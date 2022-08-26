@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+from users.serializers import UserSerializer
 
 
 # Create your views here.
@@ -24,11 +25,10 @@ class APIPasswordUpdateView(PasswordChangeView):
 
 class APISignupView(APIView):
 
-    @csrf_exempt
     def post(self, request):
-        user = User.objects.create_user(username=request.get('username'),
-                                        firstname=request.get('firstname'),
-                                        lastname=request.get('lastname'),
-                                        password=request.get('password'),
-                                        email=request.get('email'))
-        return Response(user, status=status.HTTP_200_OK)
+        user = User.objects.create_user(username=request.data.get('username'),
+                                        first_name=request.data.get('firstname'),
+                                        last_name=request.data.get('lastname'),
+                                        password=request.data.get('password'),
+                                        email=request.data.get('email'))
+        return Response(None, status=status.HTTP_200_OK)
