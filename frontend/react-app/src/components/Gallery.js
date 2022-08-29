@@ -112,17 +112,29 @@ const useStyles = makeStyles((theme) => ({
 
 function Gallery() {
     const [images, setImages] = useState(null)
-    const [image, setImage] = React.useState(null);
+    const [image, setImage] = useState(null);
+    const [og_images, setOGImages] = useState(null)
+    const [searchWord, setSearchWord] = useState(null)
     const classes = useStyles();
     const token = useSelector((state) => state.auth.token)
 
+    // useCustomCompareEffect(() => {
+    //     handleDownload()
+    // }, [images], (prevDeps, nextDeps) => prevDeps.length == nextDeps.length);
+
     useEffect(() => {
         handleDownload()
-    }, [images]);
+    }, [])
 
     const handleFileSelect = event => {
         setImage(event.target.files[0])
     };
+
+    const handleSearch = (event) => {
+        let word = event.target.value
+        let new_images = og_images.filter(element => element.pred_label.includes(word) == true)
+        setImages(new_images)
+    }
 
     const handleUpload = () => {
 
@@ -150,6 +162,7 @@ function Gallery() {
             res => {
                 console.log(res.data)
                 //window.location.reload()
+                handleDownload()
             }).catch(
                 error => {alert(error)}
                   )
@@ -167,6 +180,7 @@ function Gallery() {
         axios(config).then(
             res => {
                 setImages(res.data)
+                setOGImages(res.data)
                 console.log(res.data)
             }).catch(
                 error => {alert(error)}
@@ -215,13 +229,14 @@ function Gallery() {
                 <AppBar position="sticky" className={classes.secondaryBar} sx={{ top: 0 , alignItems: 'center', backgroundColor: '#000000b3' }}>
                     <Toolbar>
                     
-                        <Search sx={{ visibility: 'hidden' }}>
+                        <Search sx={{  }}>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
                             placeholder="Search…"
                             inputProps={{ 'aria-label': 'search' }}
+                            onChange={handleSearch}
                         />
                         </Search>
           
