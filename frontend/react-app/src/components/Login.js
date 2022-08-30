@@ -8,26 +8,12 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { FormControlLabel, Checkbox, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 
 import { connect } from 'react-redux';
 import * as actions from '../store/authActions';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 
 function Login() {
 
@@ -95,10 +81,10 @@ function Login() {
                 autoComplete="current-password"
                 onChange={handleFormFieldChange}
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -108,20 +94,19 @@ function Login() {
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
+                {/* <Grid item xs>
                   <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/sign-up/" variant="body2" align="center">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
               </Grid>
             </form>
           </Box>
-          <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
       </Container>
     );

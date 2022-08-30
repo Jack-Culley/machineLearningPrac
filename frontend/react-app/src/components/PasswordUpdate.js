@@ -54,10 +54,19 @@ const useStyles = makeStyles((theme) => ({
   
     };
   
+    const containsNumber = new RegExp('[0-9]')
+    const containsLetter = new RegExp('[a-zA-Z]')
+
     const handleSubmit = (e) => {
       e.preventDefault();
       if (new_password1 !== new_password2) {
         alert("Passwords don't match")
+      } else if (!containsNumber.test(new_password1)) {
+        alert("Password must contain a number")
+      } else if(!containsLetter.test(new_password1)) {
+          alert("Password must contain a letter")
+      } else if(new_password1.length < 8){
+          alert("Password must be at least 8 characters long")
       } else {
         let headers = { 'Authorization': `Token ${token}` };
         let method = 'post';
@@ -100,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
               id="new_password1"
               onChange={handleFormFieldChange}
               error={new_password1 !== new_password2}
-              helperText={new_password1 !== new_password2 ? "Passwords don't match" : null}
+              helperText={new_password1 !== new_password2 ? "Passwords don't match" : "Password must contain both letters and numbers and be 8 characters long"}
             />
             <TextField
               variant="outlined"
