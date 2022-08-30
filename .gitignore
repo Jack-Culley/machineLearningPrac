@@ -28,6 +28,7 @@ __pycache__/
 #local images
 *.jpeg
 *.jpg
+*.png
 /home/jackculley/VSCode/machineLearningPrac/backend/django-app/static/images/*
 backend/django-app/static/images/airplane.jpeg
 backend/django-app/prediction/__pycache__/models.cpython-38.pyc
